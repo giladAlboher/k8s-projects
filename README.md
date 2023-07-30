@@ -1,4 +1,4 @@
-<!-- Git Repository README
+Git Repository README
 Introduction
 This repository contains Kubernetes manifest files for deploying WordPress and MySQL services on a Kubernetes cluster. The provided manifests define the necessary configurations to run WordPress and MySQL containers, along with a minimal Ingress resource for accessing the WordPress service.
 
@@ -65,4 +65,4 @@ Disclaimer
 This repository is provided as-is and without any warranty. Use it at your own risk. Please ensure you have appropriate backups and security measures in place before deploying any services in a production environment.
 
 License
-This repository is licensed under the MIT License. Feel free to fork, modify, and use it according to the terms of the license. -->
+This repository is licensed under the MIT License. Feel free to fork, modify, and use it according to the terms of the license.
