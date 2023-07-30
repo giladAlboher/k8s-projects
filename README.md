@@ -1,68 +1,93 @@
-Git Repository README
-Introduction
-This repository contains Kubernetes manifest files for deploying WordPress and MySQL services on a Kubernetes cluster. The provided manifests define the necessary configurations to run WordPress and MySQL containers, along with a minimal Ingress resource for accessing the WordPress service.
+# README - WordPress and MySQL Deployment on Kubernetes
 
-Prerequisites
-Before deploying the services using these manifest files, ensure the following prerequisites are met:
+This repository contains Kubernetes manifests to deploy WordPress and MySQL services on a Kubernetes cluster. The deployment consists of a WordPress application, a MySQL database, and necessary services to expose these applications.
 
-You have a running Kubernetes cluster.
-kubectl is installed and properly configured to interact with the Kubernetes cluster.
-The Kubernetes cluster has an Ingress controller (e.g., Nginx Ingress) properly set up.
-Deployment
-Deploying MySQL
-To deploy the MySQL service, apply the following Kubernetes manifests:
+## Prerequisites
 
-bash
-Copy code
+Before deploying this application, ensure you have the following prerequisites:
+
+1. A running Kubernetes cluster.
+2. `kubectl` command-line tool installed and configured to access your cluster.
+
+## Deployment
+
+To deploy the WordPress and MySQL services, follow the steps below:
+
+1. Clone this repository:
+
+```bash
+git clone <repository_url>
+cd <repository_name>
+```
+
+2. Deploy MySQL service and persistent volume claim:
+
+```bash
 kubectl apply -f mysql-deployment.yaml
 kubectl apply -f mysql-service.yaml
 kubectl apply -f mysql-pvc.yaml
-Deploying WordPress
-To deploy the WordPress service, apply the following Kubernetes manifests:
+```
 
-bash
-Copy code
+3. Deploy WordPress service:
+
+```bash
 kubectl apply -f wordpress-deployment.yaml
 kubectl apply -f wordpress-service.yaml
-Configuring Ingress
-To configure Ingress and access the WordPress service, apply the Ingress manifest:
+```
 
-bash
-Copy code
-kubectl apply -f minimal-ingress.yaml
-Make sure that your Kubernetes cluster has an Ingress controller (e.g., Nginx Ingress) properly installed and set up.
+4. Set up Ingress (Assuming you have an Ingress Controller like NGINX Ingress installed):
 
-Service Access
-Once the deployment is successful, you can access the WordPress service using the Ingress path /testpath:
+```bash
+kubectl apply -f ingress.yaml
+```
 
-plaintext
-Copy code
-http://your-cluster-ip/testpath
-Please replace your-cluster-ip with the IP address or domain name of your Kubernetes cluster.
+## Accessing the WordPress Application
 
-Configuration
-MySQL
-Username: wordpress
-Password: root
-Database: wordpress
-WordPress
-Database Host: mysql-service
-Database Username: wordpress
-Database Password: root
-Database Name: wordpress
-Cleanup
-To remove the deployed services and resources, you can use the following commands:
+After the deployment is successful, you can access the WordPress application using the Ingress URL.
 
-bash
-Copy code
-kubectl delete deployment wordpress
-kubectl delete service wordpress-service
-kubectl delete deployment mysql
-kubectl delete service mysql-service
-kubectl delete pvc mysql-pvc
-kubectl delete ingress minimal-ingress
-Disclaimer
-This repository is provided as-is and without any warranty. Use it at your own risk. Please ensure you have appropriate backups and security measures in place before deploying any services in a production environment.
+For example, if your cluster's Ingress IP is `192.168.1.100` and the Ingress rule path is `/testpath`, you can access the WordPress application at:
 
-License
-This repository is licensed under the MIT License. Feel free to fork, modify, and use it according to the terms of the license.
+```
+http://192.168.1.100/testpath
+```
+
+## Configuration
+
+### WordPress Deployment
+
+The WordPress deployment uses the latest WordPress image and connects to the MySQL database using the environment variables `WORDPRESS_DB_HOST`, `WORDPRESS_DB_USER`, `WORDPRESS_DB_PASSWORD`, and `WORDPRESS_DB_NAME`.
+
+### MySQL Deployment
+
+The MySQL deployment uses the latest MySQL image and sets the environment variables `MYSQL_ROOT_PASSWORD`, `MYSQL_DATABASE`, `MYSQL_USER`, and `MYSQL_PASSWORD`.
+
+### Persistent Volume Claim
+
+A Persistent Volume Claim is used to provide persistent storage to the MySQL database.
+
+### Ingress
+
+The Ingress resource is used to route incoming requests to the WordPress service based on the specified path.
+
+## Clean Up
+
+To remove the deployed resources, run the following commands:
+
+```bash
+kubectl delete -f ingress.yaml
+kubectl delete -f wordpress-service.yaml
+kubectl delete -f wordpress-deployment.yaml
+kubectl delete -f mysql-pvc.yaml
+kubectl delete -f mysql-service.yaml
+kubectl delete -f mysql-deployment.yaml
+```
+
+Please ensure you back up any important data before running the clean-up commands.
+
+## Disclaimer
+
+This deployment is intended for testing and development purposes. In a production environment, make sure to secure the services properly and follow best practices.
+
+## Contributing
+
+If you find any issues with the deployment or want to contribute to the repository, feel free to open a pull request or an issue. Your feedback and contributions are appreciated!
